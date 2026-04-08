@@ -1,0 +1,11 @@
+import mongoose from "mongoose";
+
+const ticketSchema = new mongoose.Schema({
+  message: String,
+  status: {
+    type: String,
+    default: "Open",
+  },
+}, { timestamps: true });
+
+export default mongoose.model("Ticket", ticketSchema);
