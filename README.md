@@ -1,15 +1,15 @@
-# AgriEdge OMS
+# AgriEdge OMS (Salesforce)
 
-Simple Order Management System (Salesforce-ready)
+This project implements a Salesforce-based Order Management System (OMS) for AgriEdge Or-Mange Ltd.
 
 ## Features
-- Order Processing
-- Inventory Tracking
-- Status Updates
-- API Ready for Salesforce
+- Automated Order Processing
+- Real-time Inventory Tracking
+- Customer Service Integration
+- Notifications & Alerts
+- Reporting Ready Data Model
 
-## Run
-
-```bash
-npm install
-npm start
+## Tech Stack
+- Salesforce Apex
+- Triggers
+- Custom Objects
