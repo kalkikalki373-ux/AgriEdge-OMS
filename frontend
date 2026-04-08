@@ -1,1 +1,117 @@
 
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AgriEdge OMS</title>
+  <style>
+    body {
+      font-family: Arial;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+
+    h1 {
+      color: green;
+    }
+
+    input {
+      padding: 8px;
+      margin: 5px;
+    }
+
+    button {
+      padding: 8px 12px;
+      background: green;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    li {
+      background: white;
+      margin: 5px;
+      padding: 10px;
+      list-style: none;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>AgriEdge Order Management</h1>
+
+<input id="product" placeholder="Product (Seeds/Fertilizer)">
+<input id="quantity" type="number" placeholder="Quantity">
+<button onclick="createOrder()">Create Order</button>
+
+<h2>Orders</h2>
+<ul id="orders"></ul>
+
+<script>
+const API = "http://localhost:5000/api";
+
+// Create Order
+async function createOrder() {
+  const product = document.getElementById("product").value;
+  const quantity = document.getElementById("quantity").value;
+
+  if (!product || !quantity) {
+    alert("Enter product & quantity");
+    return;
+  }
+
+  await fetch(API + "/orders", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      product: product,
+      quantity: Number(quantity)
+    })
+  });
+
+  loadOrders();
+}
+
+// Load Orders
+async function loadOrders() {
+  const res = await fetch(API + "/orders");
+  const data = await res.json();
+
+  const list = document.getElementById("orders");
+  list.innerHTML = "";
+
+  data.forEach(order => {
+    const li = document.createElement("li");
+    li.innerHTML = `
+      <b>${order.product}</b> - ${order.quantity}
+      <br>Status: ${order.status}
+      <br>
+      <button onclick="updateStatus(${order.id})">Mark Delivered</button>
+    `;
+    list.appendChild(li);
+  });
+}
+
+// Update Status
+async function updateStatus(id) {
+  await fetch(API + "/orders/" + id, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      status: "Delivered"
+    })
+  });
+
+  loadOrders();
+}
+
+// Initial load
+loadOrders();
+</script>
+
+</body>
+</html>
